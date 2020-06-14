@@ -127,25 +127,6 @@ data "template_file" "setupPrimary" {
   }
 }
 
-data "template_file" "license" {
- template = "${file("${path.module}/ConfigScripts/FGVM1VTM20000859.lic")}"
-}
-
-//data "template_cloudinit_config" "config" {
-//gzip = true
-//base64_encode = true
-//part {
-//filename = "init.cfg"
-//content_type = "text/cloud-config"
-//content = "${data.template_file.license.rendered}"
-//}
-//part {
-//filename = "primaryfortigateconfigscript"
-//content_type = "text/cloud-config"
-//content = "${file("${path.module}/ConfigScripts/primaryfortigateconfigscript")}"
-//}
-//}
-
 
 variable "primary_fortigate_private_ip" {
 

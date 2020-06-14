@@ -235,6 +235,7 @@ resource "alicloud_instance" "PrimaryFortigate" {
   vswitch_id = "${alicloud_vswitch.external_a.id}"
   private_ip = "${var.primary_fortigate_private_ip}" 
  // role_name = "Fortigate-HA"
+ // dry_run = true
   role_name = "Fortigate-HA-New"
   tags          = {
     Name = "FGT1"
@@ -313,6 +314,7 @@ resource "alicloud_instance" "SecondaryFortigate" {
   //role_name = "Fortigate-HA"
   role_name = "Fortigate-HA-New"
   //Logging Disk
+  //dry_run = true
   tags = {
    Name="FGT2"
 }
@@ -321,6 +323,22 @@ resource "alicloud_instance" "SecondaryFortigate" {
     category = "cloud_ssd"
     delete_with_instance = true
   }
+}
+
+
+resource "alicloud_instance" "web-a" {
+ depends_on = [alicloud_vswitch.internal_a]
+ image_id = "ubuntu_18_04_x64_20G_alibase_20200521.vhd"
+ security_groups = "${alicloud_security_group.SecGroup.*.id}"
+ instance_type = "ecs.n1.tiny"
+ system_disk_category = "cloud_efficiency"
+ instance_name="web-a"
+ vswitch_id = "${alicloud_vswitch.internal_a.id}"
+ private_ip = "10.0.12.109"
+ password ="Welcome.123"
+ host_name = "web-a"
+ 
+
 }
 
 
