@@ -1,3 +1,9 @@
+this is automatic script for 
+
+https://docs.fortinet.com/vm/alicloud/fortigate/6.4/alicloud-cookbook/6.4.0/967820/deploying-fortigate-vm-ha-on-alicloud-between-availability-zones
+
+
+
 this script will create two Fortigate BYOL instances in aliyun hongkong region zone b and zone c
 this script will also create a webserver with ip 10.0.12.109 in subnet 10.0.12.0/24 zone b 
 the webserver default password is root/Welcome.123
