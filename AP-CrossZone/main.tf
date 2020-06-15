@@ -1,5 +1,3 @@
-//common in vpc 
-
 data "alicloud_regions" "current_region_ds" {
   current = true
 }
@@ -77,7 +75,6 @@ resource "alicloud_route_entry" "custom_route_table_egress" {
   name                  = "${alicloud_network_interface.PrimaryFortiGateInterface1.id}"
   nexthop_id            = "${alicloud_network_interface.PrimaryFortiGateInterface1.id}"
 }
-//
 resource "alicloud_route_table_attachment" "custom_route_table_attachment_private" {
   count          = 1
   vswitch_id     = "${alicloud_vswitch.internal_a.id}"
@@ -86,7 +83,6 @@ resource "alicloud_route_table_attachment" "custom_route_table_attachment_privat
 
 
 
-//creat switch in region a or az[1]. which is zone "b" 
 resource "alicloud_vswitch" "external_a" {
   name              = "external_a"
   vpc_id            = alicloud_vpc.vpc.id
@@ -115,7 +111,6 @@ resource "alicloud_vswitch" "mgmt_a" {
   availability_zone = var.fgt1_availability_zone
 }
 
-//region b switch on az[1]. which is zone "c"
 resource "alicloud_vswitch" "external_b" {
   vpc_id            = alicloud_vpc.vpc.id
   cidr_block        = var.vswitch_b_cidr_1
@@ -146,7 +141,6 @@ resource "alicloud_vswitch" "mgmt_b" {
 
 
 
-//secondary ENI for primaryFortigateInstances , bind to vswitch in zone a
 resource "alicloud_network_interface" "PrimaryFortiGateInterface1" {
   depends_on      = [alicloud_vswitch.internal_a]
   name            = "${var.cluster_name}-Primary-Internal-ENI-${random_string.random_name_post.result}"
@@ -155,7 +149,6 @@ resource "alicloud_network_interface" "PrimaryFortiGateInterface1" {
   private_ip      = "10.0.12.11"
 }
 
-//Third ENI for primary fortigate
 resource "alicloud_network_interface" "PrimaryFortiGateInterface2" {
   depends_on      = [alicloud_network_interface.PrimaryFortiGateInterface1]
   name            = "${var.cluster_name}-Primary-HA-ENI-${random_string.random_name_post.result}"
@@ -163,7 +156,6 @@ resource "alicloud_network_interface" "PrimaryFortiGateInterface2" {
   security_groups = ["${alicloud_security_group.SecGroup.id}"]
   private_ip      = "10.0.13.11"
 }
-//Forth ENI for primary fortigate
 resource "alicloud_network_interface" "PrimaryFortiGateInterface3" {
   depends_on      = [alicloud_network_interface.PrimaryFortiGateInterface2]
   name            = "${var.cluster_name}-Primary-MGMT-ENI-${random_string.random_name_post.result}"
@@ -172,14 +164,12 @@ resource "alicloud_network_interface" "PrimaryFortiGateInterface3" {
   private_ip      = "10.0.14.11"
 }
 
-//
 resource "alicloud_eip" "FgaMgmtEip" {
   name                 = "EIP1"
   bandwidth            = "5"
   internet_charge_type = "PayByBandwidth"
 }
 
-//
 resource "alicloud_eip" "FgbMgmtEip" {
   name                 = "EIP2"
   bandwidth            = "5"
@@ -200,7 +190,6 @@ resource "alicloud_eip_association" "eip_asso_fgb_mgmt" {
   private_ip_address = "10.0.24.12"
 }
 
-//eip for public internet access
 
 resource "alicloud_eip" "PublicInternetIp" {
   name                 = "EIP3"
@@ -208,7 +197,6 @@ resource "alicloud_eip" "PublicInternetIp" {
   internet_charge_type = "PayByBandwidth"
 }
 
-//assocation eip "PubicInternetIp" to PrimaryFortigate
 
 resource "alicloud_eip_association" "eip_asso_fga_port1" {
   allocation_id = "${alicloud_eip.PublicInternetIp.id}"
@@ -216,25 +204,18 @@ resource "alicloud_eip_association" "eip_asso_fga_port1" {
 }
 
 
-
-
-
-
 resource "alicloud_instance" "PrimaryFortigate" {
   depends_on        = [alicloud_network_interface.PrimaryFortiGateInterface3]
   availability_zone = "${data.alicloud_zones.default.zones.0.id}"
   security_groups   = "${alicloud_security_group.SecGroup.*.id}"
-  //  internet_max_bandwidth_out=10
   image_id      = var.instance_ami
   user_data     = "${data.template_file.setupPrimary.rendered}"
   instance_type = "${data.alicloud_instance_types.types_ds.instance_type_family}"
   //  user_data = "${data.template_file.license.rendered}"
-  //instance_type = "ecs.sn1ne.large"
   system_disk_category = "cloud_efficiency"
   instance_name        = "${var.cluster_name}-Primary-FortiGate-${random_string.random_name_post.result}"
   vswitch_id           = "${alicloud_vswitch.external_a.id}"
   private_ip           = "${var.primary_fortigate_private_ip}"
-  // role_name = "Fortigate-HA"
   // dry_run = true
   role_name = "Fortigate-HA-New"
   tags = {
@@ -300,7 +281,6 @@ resource "alicloud_instance" "SecondaryFortigate" {
   depends_on        = [alicloud_network_interface.SecondaryFortiGateInterface3]
   availability_zone = "${data.alicloud_zones.default.zones.1.id}"
   security_groups   = "${alicloud_security_group.SecGroup.*.id}"
-  //  internet_max_bandwidth_out=10
   image_id  = var.instance_ami
   user_data = "${data.template_file.setupSecondary.rendered}"
   //user_data = "${base64encode(data.template_file.userdata_sec_lic.rendered)}"
@@ -311,7 +291,6 @@ resource "alicloud_instance" "SecondaryFortigate" {
   instance_name        = "${var.cluster_name}-Secondary-FortiGate-${random_string.random_name_post.result}"
   vswitch_id           = "${alicloud_vswitch.external_b.id}"
   private_ip           = "${var.secondary_fortigate_private_ip}"
-  //role_name = "Fortigate-HA"
   role_name = "Fortigate-HA-New"
   //Logging Disk
   //dry_run = true
@@ -337,7 +316,6 @@ resource "alicloud_instance" "web-a" {
   private_ip           = "10.0.12.109"
   password             = "Welcome.123"
   host_name            = "web-a"
-
 
 }
 
