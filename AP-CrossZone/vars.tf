@@ -9,13 +9,13 @@ variable "secret_key" {
 }
 
 variable "fgt1_zone_index" {
-  type = string
-  default =1
+  type    = string
+  default = 1
 }
 
 variable "fgt2_zone_index" {
-  type = string
-  default = 2 
+  type    = string
+  default = 2
 }
 
 variable "region" {
@@ -24,12 +24,12 @@ variable "region" {
 }
 
 variable "fgt1_availability_zone" {
-  type = string
+  type    = string
   default = "cn-hongkong-b"
 }
 
 variable "fgt2_availability_zone" {
-  type = string
+  type    = string
   default = "cn-hongkong-c"
 }
 
@@ -79,8 +79,8 @@ variable "vswitch_b_cidr_4" {
 }
 
 variable "default_egress_route" {
-   type   = string
-   default = "0.0.0.0/0"
+  type    = string
+  default = "0.0.0.0/0"
 }
 
 variable "cluster_name" {
@@ -98,13 +98,13 @@ provider "alicloud" {
 }
 
 variable "instance_ami" {
- type    = string
+  type    = string
   default = "m-j6cbretxym0yidwzk1hs" // this is BYOL 6.4.1 for cn-hongkong
 }
 
 variable "instance" {
-  type    = string
- 
+  type = string
+
   default = "ecs.c6.2xlarge" //this is 8Core16G
 }
 
@@ -149,4 +149,4 @@ variable "secondary_fortigate_private_ip" {
   type    = string
   default = "10.0.21.12"
 }
-    
+
