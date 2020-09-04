@@ -206,7 +206,8 @@ resource "alicloud_eip_association" "eip_asso_fga_port1" {
 
 resource "alicloud_instance" "PrimaryFortigate" {
   depends_on        = [alicloud_network_interface.PrimaryFortiGateInterface3]
-  availability_zone = "${data.alicloud_zones.default.zones.0.id}"
+  // availability_zone = "${data.alicloud_zones.default.zones.0.id}"
+  availability_zone = var.fgt1_availability_zone
   security_groups   = "${alicloud_security_group.SecGroup.*.id}"
   image_id      = var.instance_ami
   user_data     = "${data.template_file.setupPrimary.rendered}"
@@ -279,7 +280,8 @@ resource "alicloud_network_interface" "SecondaryFortiGateInterface3" {
 
 resource "alicloud_instance" "SecondaryFortigate" {
   depends_on        = [alicloud_network_interface.SecondaryFortiGateInterface3]
-  availability_zone = "${data.alicloud_zones.default.zones.1.id}"
+  // availability_zone = "${data.alicloud_zones.default.zones.1.id}"
+  availability_zone = var.fgt2_availability_zone
   security_groups   = "${alicloud_security_group.SecGroup.*.id}"
   image_id  = var.instance_ami
   user_data = "${data.template_file.setupSecondary.rendered}"
@@ -309,7 +311,8 @@ resource "alicloud_instance" "web-a" {
   depends_on           = [alicloud_vswitch.internal_a]
   image_id             = "ubuntu_18_04_x64_20G_alibase_20200521.vhd"
   security_groups      = "${alicloud_security_group.SecGroup.*.id}"
-  instance_type        = "ecs.n1.tiny"
+ // instance_type        = "ecs.n1.tiny"
+  instance_type = "ecs.t5-lc2m1.nano"
   system_disk_category = "cloud_efficiency"
   instance_name        = "web-a"
   vswitch_id           = "${alicloud_vswitch.internal_a.id}"
