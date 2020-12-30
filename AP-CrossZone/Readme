@@ -16,7 +16,7 @@ the default region is cn-hongkong. the default fortigate image is 6.4.1 BYOL
 
 example 
 
-terraform apply -var 'access_key=<you access_key>' -var 'secret_key=<you secret_key>'
+terraform apply -var "access_key=<you access_key>" -var "secret_key=<you secret_key>"
 
 
 ........
