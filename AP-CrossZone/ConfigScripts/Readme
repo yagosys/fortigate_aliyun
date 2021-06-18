@@ -1,0 +1,3 @@
+copy license file and name it with fga.lic and fgb.lic
+excute fga_generate_template.sh and fgb_generate_template.sh to generate config with license
+
