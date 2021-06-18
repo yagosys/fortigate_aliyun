@@ -1,0 +1,1 @@
+cat fga_header1 fga_config fga_header2 fga.lic fga_foot>primaryfortigateconfigscript

@@ -1,0 +1,72 @@
+config system global
+    set hostname "FGT2"
+    set admin-sport 443
+end
+config system interface
+    edit "port1"
+        set vdom "root"
+        set mode static
+        set ip 10.0.21.12 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+        set snmp-index 1
+    next
+    edit "port2"
+        set vdom "root"
+        set mode static
+        set ip 10.0.22.12 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+    next
+    edit "port3"
+        set vdom "root"
+        set mode static
+        set ip 10.0.23.12 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+    next
+    edit "port4"
+        set vdom "root"
+        set mode static
+        set ip 10.0.24.12 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+    next
+end
+config router static
+    edit 1
+       set gateway 10.0.21.253
+       set device "port1"
+    next
+    edit 2
+       set dst 10.0.12.0 255.255.255.0
+       set gateway 10.0.22.253
+       set device "port2"
+end
+
+config system ha
+        set group-name "fgtha2"
+        set mode a-p
+        set hbdev "port3" 50
+        set session-pickup enable
+        set ha-mgmt-status enable
+        config ha-mgmt-interface
+                edit 1
+                        set interface "port4"
+                        set gateway 10.0.24.253
+                next
+        end
+        set priority 50
+        set monitor "port1"
+        set unicast-hb enable
+        set unicast-hb-peerip 10.0.13.11
+end
+config system settings
+     set asymroute enable
+end
+
+config system vdom-exception
+   edit 1
+       set object router.static
+   next
+end

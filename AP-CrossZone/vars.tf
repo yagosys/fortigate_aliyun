@@ -91,9 +91,9 @@ variable "cluster_name" {
 // Configure the Alicloud Provider
 
 provider "alicloud" {
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
-  region     = "${var.region}"
+  access_key = var.access_key
+  secret_key = var.secret_key
+  region     = var.region
   version    = "=1.70.2"
 }
 
@@ -105,7 +105,7 @@ variable "instance_ami" {
 variable "instance" {
   type = string
 
-  default = "ecs.c6.2xlarge" //this is 8Core16G
+  default = "ecs.hfc6.2xlarge" //this is 8Core16G
 }
 
 //Get Instance types with min requirements in the region.
@@ -120,7 +120,7 @@ data "alicloud_account" "current" {
 }
 
 data "template_file" "setupPrimary" {
-  template = "${file("${path.module}/ConfigScripts/primaryfortigateconfigscript")}"
+  template = file("${path.module}/ConfigScripts/primaryfortigateconfigscript")
   vars = {
     region     = "${var.region}",
     account_id = "${data.alicloud_account.current.id}"
@@ -138,7 +138,7 @@ variable "primary_fortigate_private_ip" {
 
 //for SecondaryFortigate
 data "template_file" "setupSecondary" {
-  template = "${file("${path.module}/ConfigScripts/secondaryfortigateconfigscript")}"
+  template = file("${path.module}/ConfigScripts/secondaryfortigateconfigscript")
   vars = {
     region     = "${var.region}",
     account_id = "${data.alicloud_account.current.id}"

@@ -1,0 +1,1 @@
+cat fgb_header1 fgb_config fgb_header2 fgb.lic fgb_foot>secondaryfortigateconfigscript
