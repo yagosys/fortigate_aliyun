@@ -1,3 +1,12 @@
+Content-Type: multipart/mixed; boundary="===============0740947994048906860=="
+MIME-Version: 1.0
+
+--===============0740947994048906860==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="primaryfortigateconfigscript"
+
 config system global
     set hostname "FGT1"
     set admin-sport 443
@@ -129,3 +138,12 @@ config system api-user
         end
     next
 end
+
+--===============0740947994048906860==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="license"
+
+
+--===============0740947994048906860==--
