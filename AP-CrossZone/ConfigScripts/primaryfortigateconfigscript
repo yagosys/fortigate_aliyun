@@ -1,0 +1,135 @@
+Content-Type: multipart/mixed; boundary="===============0740947994048906860=="
+MIME-Version: 1.0
+
+--===============0740947994048906860==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="primaryfortigateconfigscript"
+
+config system global
+    set hostname "FGT1"
+    set admin-sport 443
+end
+config system interface
+    edit "port1"
+        set vdom "root"
+        set mode static
+        set ip 10.0.11.11 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+        set snmp-index 1
+    next
+    edit "port2"
+        set vdom "root"
+        set mode static
+        set ip 10.0.12.11 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+    next
+    edit "port3"
+        set vdom "root"
+        set mode static
+        set ip 10.0.13.11 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+    next
+    edit "port4"
+        set vdom "root"
+        set mode static
+        set ip 10.0.14.11 255.255.255.0
+        set allowaccess ping http https ssh fgfm
+        set type physical
+    next
+end
+config router static
+    edit 1
+       set gateway 10.0.11.253
+       set device "port1"
+    next
+end
+
+config firewall policy
+  edit 1
+     set name "egress_all"
+     set srcintf "port2"
+     set dstintf "port1"
+     set srcaddr "all"
+     set dstaddr "all"
+     set action accept
+     set schedule "always"
+     set service "ALL"
+     set logtraffic all
+     set nat enable
+  next
+  edit 2
+     set name "toWeb8080"
+     set srcintf "port1"
+     set dstintf "port2"
+     set srcaddr "all"
+     set dstaddr "web8080"
+     set action accept
+     set schedule "always"
+     set service "ALL"
+     set logtraffic all
+   next
+  edit 3
+    set name "port1-port1"
+       set srcintf "port1"
+       set dstintf "port1"
+       set srcaddr "all"
+       set dstaddr "web8080"
+       set action accept
+       set schedule "always"
+       set service "ALL"
+       set logtraffic all
+   next
+end
+
+config firewall vip
+    edit "web8080"
+        set extintf "port1"
+        set portforward enable
+        set mappedip "10.0.12.109"
+        set extport 8080
+        set mappedport 8080
+    next
+end
+
+config system ha
+        set group-name "fgtha2"
+        set mode a-p
+        set hbdev "port3" 50
+        set session-pickup enable
+        set ha-mgmt-status enable
+        config ha-mgmt-interface
+                edit 1
+                        set interface "port4"
+                        set gateway 10.0.14.253
+                next
+        end
+        set priority 100
+        set monitor "port1"
+        set unicast-hb enable
+        set unicast-hb-peerip 10.0.23.12
+end
+
+config system settings
+     set asymroute enable
+end
+
+
+config system vdom-exception
+   edit 1
+       set object router.static
+   next
+end
+
+--===============0740947994048906860==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="license"
+
+
+--===============0740947994048906860==--
