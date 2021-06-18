@@ -115,3 +115,15 @@ config system vdom-exception
        set object router.static
    next
 end
+
+config system api-user
+    edit "soc2"
+        set accprofile "prof_admin"
+        set vdom "root"
+        config trusthost
+            edit 1
+                set ipv4-trusthost 119.0.0.0 255.0.0.0
+            next
+        end
+    next
+end

@@ -475,3 +475,4 @@ resource "alicloud_ram_role_policy_attachment" "attach" {
   role_name   = alicloud_ram_role.role.name
   policy_type = alicloud_ram_policy.policy.type
 }
+

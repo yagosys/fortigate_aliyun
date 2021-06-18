@@ -97,6 +97,7 @@ provider "alicloud" {
   version    = "=1.70.2"
 }
 
+
 variable "instance_ami" {
   type    = string
   default = "m-j6cbretxym0yidwzk1hs" // this is BYOL 6.4.1 for cn-hongkong
