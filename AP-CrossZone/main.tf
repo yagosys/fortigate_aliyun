@@ -313,6 +313,7 @@ resource "alicloud_instance" "SecondaryFortigate" {
 
 resource "alicloud_instance" "web-a" {
   depends_on      = [alicloud_vswitch.internal_a]
+  user_data = "${data.template_file.web_user_data.rendered}"
   image_id        = "ubuntu_18_04_x64_20G_alibase_20200521.vhd"
   security_groups = alicloud_security_group.SecGroup.*.id
   // instance_type        = "ecs.n1.tiny"
@@ -321,7 +322,7 @@ resource "alicloud_instance" "web-a" {
   instance_name        = "web-a"
   vswitch_id           = alicloud_vswitch.internal_a.id
   private_ip           = "10.0.12.109"
-  password             = "Welcome.123"
+  password             = "Abcd@1234"
   host_name            = "web-a"
 
 }
@@ -393,6 +394,10 @@ output "SecondaryFortigateID" {
 
 output "ActiveFortigateEIP3" {
   value= alicloud_eip.PublicInternetIp.ip_address
+}
+
+output "WebStartupFile" {
+  value= alicloud_instance.web-a.user_data
 }
 
 resource "alicloud_ram_role" "role" {

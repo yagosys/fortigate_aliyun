@@ -128,6 +128,10 @@ data "template_file" "setupPrimary" {
   }
 }
 
+data "template_file" "web_user_data" {
+  template = file("${path.module}/web/user_data.sh")
+}
+
 
 variable "primary_fortigate_private_ip" {
 
