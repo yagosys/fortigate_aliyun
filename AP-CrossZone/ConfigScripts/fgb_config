@@ -44,6 +44,53 @@ config router static
        set device "port2"
 end
 
+config firewall policy
+  edit 1
+     set name "egress_all"
+     set srcintf "port2"
+     set dstintf "port1"
+     set srcaddr "all"
+     set dstaddr "all"
+     set action accept
+     set schedule "always"
+     set service "ALL"
+     set logtraffic all
+     set nat enable
+  next
+  edit 2
+     set name "toWeb8080"
+     set srcintf "port1"
+     set dstintf "port2"
+     set srcaddr "all"
+     set dstaddr "web8080"
+     set action accept
+     set schedule "always"
+     set service "ALL"
+     set logtraffic all
+   next
+  edit 3
+    set name "port1-port1"
+       set srcintf "port1"
+       set dstintf "port1"
+       set srcaddr "all"
+       set dstaddr "web8080"
+       set action accept
+       set schedule "always"
+       set service "ALL"
+       set logtraffic all
+   next
+end
+
+config firewall vip
+    edit "web8080"
+        set extintf "port1"
+        set portforward enable
+        set mappedip "10.0.12.109"
+        set extport 8080
+        set mappedport 8080
+    next
+end
+
 config system ha
         set group-name "fgtha2"
         set mode a-p
@@ -77,6 +124,12 @@ config system api-user
         set vdom "root"
         config trusthost
             edit 1
+                set ipv4-trusthost 128.0.0.0 128.0.0.0
+            next
+            edit 2
+                set ipv4-trusthost 64.0.0.0 192.0.0.0
+            next
+            edit 3
                 set ipv4-trusthost 119.0.0.0 255.0.0.0
             next
         end
