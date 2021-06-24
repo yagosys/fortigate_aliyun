@@ -3,7 +3,7 @@
 ipaddress=`terraform output -json | jq -r .ActiveFortigateEIP3.value`
 export FORTIOS_ACCESS_HOSTNAME=$ipaddress
 #echo $ipaddress
-token=`./firewall_remote_ls_main -addr $FORTIOS_ACCESS_HOSTNAME -password Welcome.123`
+token=`./gossh -addr $FORTIOS_ACCESS_HOSTNAME -password Welcome.123`
 tokenstring=`echo $token | cut -d ' ' -f6`
 #echo $tokenstring
 export FORTIOS_ACCESS_TOKEN=$tokenstring
