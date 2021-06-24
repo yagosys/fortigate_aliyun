@@ -135,6 +135,10 @@ config system api-user
             next
             edit 2 
                 set ipv4-trusthost 64.0.0.0 192.0.0.0
+            next
+            edit 3 
+                set ipv4-trusthost 119.0.0.0 255.0.0.0
+            next
         end
     next
 end
