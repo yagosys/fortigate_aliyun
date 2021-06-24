@@ -1,0 +1,3 @@
+use ". set_fortos_env.sh" to generate API etc to access fortigate
+cd fortigate directory to do terraform init/apply to config fortigate
+

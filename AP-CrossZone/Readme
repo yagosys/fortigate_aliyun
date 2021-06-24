@@ -15,73 +15,33 @@ you will also need to get two Fortigate license.
 the default region is cn-hongkong. the default fortigate image is 6.4.1 BYOL
 
 example 
+use ./cn-zhangjiakou.sh  to deploy two fortigate and one web server at region cn-zhangjiakou.
+modify cn-zhangjiakou.sh accordingly if you want change region or other parameters.
 
-terraform apply -var "access_key=<you access_key>" -var "secret_key=<you secret_key>"
+after run ./cn-zhangjiakou.sh. below resource will be deployed.
 
 
-........
-alicloud_network_interface.PrimaryFortiGateInterface1: Creating...
-alicloud_network_interface.PrimaryFortiGateInterface1: Creation complete after 3s [id=eni-j6cd2rkhht4q75yfi9kh]
-alicloud_network_interface.PrimaryFortiGateInterface2: Creating...
-alicloud_route_entry.custom_route_table_egress[0]: Creating...
-alicloud_network_interface.PrimaryFortiGateInterface2: Creation complete after 3s [id=eni-j6cdt66fa00uwxl42j7e]
-alicloud_network_interface.PrimaryFortiGateInterface3: Creating...
-alicloud_network_interface.PrimaryFortiGateInterface3: Creation complete after 2s [id=eni-j6chom1l0cfulco7a4yy]
-alicloud_instance.PrimaryFortigate: Creating...
-alicloud_eip_association.eip_asso_fga_mgmt: Creating...
-alicloud_route_entry.custom_route_table_egress[0]: Still creating... [10s elapsed]
-alicloud_route_entry.custom_route_table_egress[0]: Creation complete after 12s [id=vtb-j6c49k15p9ytf3two2njz:vrt-j6cgu7xn1samhiod85s71:0.0.0.0/0:NetworkInterface:eni-j6cd2rkhht4q75yfi9kh]
-alicloud_eip_association.eip_asso_fga_mgmt: Creation complete after 8s [id=eip-j6cdnnk80glr2ucf43sbp:eni-j6chom1l0cfulco7a4yy]
-alicloud_instance.PrimaryFortigate: Still creating... [10s elapsed]
-alicloud_instance.PrimaryFortigate: Still creating... [20s elapsed]
-alicloud_instance.PrimaryFortigate: Creation complete after 28s [id=i-j6cekqybwgku8hqcb9ik]
-alicloud_network_interface_attachment.PrimaryFortigateattachment1: Creating...
-alicloud_eip_association.eip_asso_fga_port1: Creating...
-alicloud_network_interface_attachment.PrimaryFortigateattachment1: Creation complete after 3s [id=eni-j6cd2rkhht4q75yfi9kh:i-j6cekqybwgku8hqcb9ik]
-alicloud_network_interface_attachment.PrimaryFortigateattachment2: Creating...
-alicloud_network_interface_attachment.PrimaryFortigateattachment2: Creation complete after 3s [id=eni-j6cdt66fa00uwxl42j7e:i-j6cekqybwgku8hqcb9ik]
-alicloud_network_interface_attachment.PrimaryFortigateattachment3: Creating...
-alicloud_network_interface_attachment.PrimaryFortigateattachment3: Creation complete after 3s [id=eni-j6chom1l0cfulco7a4yy:i-j6cekqybwgku8hqcb9ik]
-alicloud_eip_association.eip_asso_fga_port1: Still creating... [10s elapsed]
-alicloud_eip_association.eip_asso_fga_port1: Still creating... [20s elapsed]
-alicloud_eip_association.eip_asso_fga_port1: Still creating... [30s elapsed]
-alicloud_eip_association.eip_asso_fga_port1: Creation complete after 37s [id=eip-j6cm3gh497dwdak3mvzvw:i-j6cekqybwgku8hqcb9ik]
+terraform output
+ActiveFortigateEIP3 = "8.142.20.180"
+PrimaryFortigateAvailability_zone = "cn-zhangjiakou-a"
+PrimaryFortigateID = "i-8vbj198j8co2vv0mlkgr"
+PrimaryFortigatePrivateIP = "10.0.11.11"
+PrimaryFortigatePublicIP = ""
+PrimaryFortigate_MGMT_EIP = "8.142.18.142"
+SecondaryFortigateAvailability_zone = "cn-zhangjiakou-c"
+SecondaryFortigateID = "i-8vbe7laguyy49mi442gl"
+SecondaryFortigatePrivateIP = "10.0.21.12"
+SecondaryFortigatePublicIP = ""
+SecondaryFortigate_MGMT_EIP = "8.142.21.3"
+WebStartupFile = <<EOT
+#!/bin/bash -v
+echo "userdata-start"
+sudo apt update -y
+sudo apt install -y nginx
+sudo sed -i 's/80/8080/' /etc/nginx/sites-available/default
+sudo service nginx stop
+sudo service nginx start
+echo "userdata-end"
 
-Apply complete! Resources: 40 added, 0 changed, 0 destroyed.
 
-Outputs:
-
-PrimaryFortigateAvailability_zone = cn-hongkong-b
-PrimaryFortigateEIP = {
-  "bandwidth" = 5
-  "description" = ""
-  "id" = "eip-j6cdnnk80glr2ucf43sbp"
-  "instance_charge_type" = "PostPaid"
-  "internet_charge_type" = "PayByBandwidth"
-  "ip_address" = "47.57.182.15"
-  "isp" = "BGP"
-  "name" = "EIP1"
-  "resource_group_id" = "rg-acfnvk5wgc6oalq"
-  "status" = "Available"
-  "tags" = {}
-}
-PrimaryFortigateID = i-j6cekqybwgku8hqcb9ik
-PrimaryFortigatePrivateIP = 10.0.11.11
-PrimaryFortigatePublicIP =
-SecondaryFortigateAvailability_zone = cn-hongkong-c
-SecondaryFortigateEIP = {
-  "bandwidth" = 5
-  "description" = ""
-  "id" = "eip-j6crt89bs5wqm00mbfft8"
-  "instance_charge_type" = "PostPaid"
-  "internet_charge_type" = "PayByBandwidth"
-  "ip_address" = "47.57.182.69"
-  "isp" = "BGP"
-  "name" = "EIP2"
-  "resource_group_id" = "rg-acfnvk5wgc6oalq"
-  "status" = "InUse"
-  "tags" = {}
-}
-SecondaryFortigateID = i-j6cgct1omslry3umewa3
-SecondaryFortigatePrivateIP = 10.0.21.12
-SecondaryFortigatePublicIP =
+EOT
