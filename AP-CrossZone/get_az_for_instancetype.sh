@@ -1,0 +1,1 @@
+aliyun ecs DescribeAvailableResource --DestinationResource InstanceType --IoOptimized --InstanceType ecs.hfc6.2xlarge  --region cn-zhangjiakou  | jq '.AvailableZones.AvailableZone[] | "\(.AvailableResources.AvailableResource[].SupportedResources.SupportedResource[].Value) \(.ZoneId)"'

@@ -12,5 +12,5 @@ terraform {
 
 resource "fortios_system_setting_dns" "test1" {
 primary = "172.16.95.16"
-secondary = "1.1.1.1"
+secondary = "8.8.4.4"
 }
