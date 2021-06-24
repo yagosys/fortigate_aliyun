@@ -353,8 +353,8 @@ output "PrimaryFortigatePublicIP" {
   value = alicloud_instance.PrimaryFortigate.public_ip
 }
 
-output "PrimaryFortigateEIP" {
-  value = alicloud_eip.FgaMgmtEip
+output "PrimaryFortigate_MGMT_EIP" {
+  value = alicloud_eip.FgaMgmtEip.ip_address
 }
 
 output "PrimaryFortigateAvailability_zone" {
@@ -374,8 +374,8 @@ output "SecondaryFortigatePublicIP" {
   value = alicloud_instance.SecondaryFortigate.public_ip
 }
 
-output "SecondaryFortigateEIP" {
-  value = alicloud_eip.FgbMgmtEip
+output "SecondaryFortigate_MGMT_EIP" {
+  value = alicloud_eip.FgbMgmtEip.ip_address
 }
 
 output "SecondaryFortigateAvailability_zone" {
@@ -391,6 +391,9 @@ output "SecondaryFortigateID" {
   value = alicloud_instance.SecondaryFortigate.id
 }
 
+output "ActiveFortigateEIP3" {
+  value= alicloud_eip.PublicInternetIp.ip_address
+}
 
 resource "alicloud_ram_role" "role" {
   name     = "Fortigate-HA-New"
