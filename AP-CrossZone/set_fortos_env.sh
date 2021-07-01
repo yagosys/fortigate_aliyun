@@ -8,7 +8,7 @@ tokenstring=`echo $token | cut -d ' ' -f6`
 #echo $tokenstring
 export FORTIOS_ACCESS_TOKEN=$tokenstring
 
-export $FORTIOS_INSECURE=true
+export FORTIOS_INSECURE=true
 
 echo $FORTIOS_ACCESS_HOSTNAME
 echo $FORTIOS_ACCESS_TOKEN
