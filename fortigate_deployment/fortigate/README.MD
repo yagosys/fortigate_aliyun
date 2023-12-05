@@ -17,6 +17,6 @@ terraform apply
 after deploy, you MUST go to alibaba cloud console , use vnc console to connect into both fortigate and do 
 
 ```
-execute factuoryreset keepvmlicense
+execute factoryreset keepvmlicense
 ```
 
