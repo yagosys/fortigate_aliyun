@@ -1,0 +1,51 @@
+region="ap-southeast-1"
+profile="default"
+instance_type="auto"
+subnet_cidr="192.168.0.0/16"
+hubvpc_vswitch_a_cidr_13="192.168.13.0/24"
+hubvpc_vswitch_b_cidr_23="192.168.23.0/24"
+
+vpc1_subnets="10.1.0.0/16"
+vpc1_vswitch0_subnet="10.1.0.0/24"
+vpc1_vswitch1_subnet="10.1.1.0/24"
+
+vpc1_subnet_cidr1= "10.0.0.0/8"
+vpc2_subnet_cidr2="10.0.0.0/8"
+
+vpc2_subnets="10.0.0.0/16"
+vpc2_vswitch0_subnet="10.0.0.0/24"
+vpc2_vswitch1_subnet="10.0.1.0/24" 
+#image_id="m-t4n1pi4bc120x9cepcz4" #7.0.2 BYOL
+image_id="m-t4nh53dqa1l5gstwcq5x" #6.4.8 BYOL ap-southeast-1
+most_recent_image_search_string_from_marketplace="FortiGate-6.4.5.+BYOL"
+number_of_fortigate=2
+number_of_zone=2
+custom_rt=1
+mgmt_eip=0
+eip=0
+natgw=1
+securehub="0"
+spoke_linux_vpc_1=0
+spoke_linux_vpc_2=0
+cpu_core_count=8
+memory_size=16
+eni_amount=4
+
+fortigate= {
+          hostname=[
+                    "fortigate-active",
+                    "fortigate-passive",
+                ]
+            license_file=[
+                    "./FGVMULTM22000730.lic",
+                    "./FGVMULTM22000750.lic",
+                ]
+            internet_max_bandwidth_out=[
+                    "0",
+                    "0",
+                ]
+            ha_priority=[
+                     "200",
+                     "100",
+                ]
+}
